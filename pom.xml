@@ -8,7 +8,7 @@
   </parent>
 
   <artifactId>extra-enforcer-rules</artifactId>
-  <version>1.0-beta-8-SNAPSHOT</version>
+  <version>1.0-beta-7-sonatype-fork-1</version>
 
   <name>Extra Enforcer Rules</name>
 
@@ -32,16 +32,11 @@
   </issueManagement>
 
   <scm>
-    <connection>scm:git:https://github.com/mojohaus/extra-enforcer-rules.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com/mojohaus/extra-enforcer-rules.git</developerConnection>
-    <url>https://github.com/mojohaus/extra-enforcer-rules</url>
+    <connection>scm:git:https://github.com/bradcupit/extra-enforcer-rules.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/bradcupit/extra-enforcer-rules.git</developerConnection>
+    <url>https://github.com/bradcupit/extra-enforcer-rules</url>
     <tag>HEAD</tag>
   </scm>
-
-  <ciManagement>
-    <system>Travis</system>
-    <url>https://travis-ci.org/mojohaus/extra-enforcer-rules</url>
-  </ciManagement>
 
   <repositories>
     <repository>
@@ -77,6 +72,13 @@
       <timezone>Europe/Paris</timezone>
     </developer>
   </developers>
+
+  <distributionManagement>
+    <repository>
+      <id>sonatype-private</id>
+      <url>https://repository.sonatype.org/service/local/staging/deploy/maven2</url>
+    </repository>
+  </distributionManagement>
 
   <properties>
     <enforcerApiVersion>1.0</enforcerApiVersion>
@@ -213,6 +215,58 @@
           </execution>
         </executions>
       </plugin>
+
+      <plugin>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>3.0.1</version>
+        <executions>
+          <execution>
+            <id>source-jar</id>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <execution>
+            <id>javadoc-jar</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <version>1.6</version>
+        <executions>
+          <execution>
+            <id>gpg</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+        <plugin>
+          <groupId>org.sonatype.plugins</groupId>
+          <artifactId>nexus-staging-maven-plugin</artifactId>
+          <version>1.6.7</version>
+          <extensions>true</extensions>
+          <configuration>
+            <serverId>sonatype-nexus</serverId>
+            <nexusUrl>https://repository.sonatype.org</nexusUrl>
+            <autoReleaseAfterClose>false</autoReleaseAfterClose>
+            <stagingProfileId>628a979b241258</stagingProfileId>
+          </configuration>
+        </plugin>
     </plugins>
   </build>
   <reporting>
